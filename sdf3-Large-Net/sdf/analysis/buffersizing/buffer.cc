@@ -1160,6 +1160,37 @@ namespace SDF
         if (d->thr > ds->thr)
             ds->thr = d->thr;
 
+        // TODO, shihao's modifications
+        // To speedup the computation, I increment all the dependent channels.
+        dNew = newStorageDistribution();
+        dNew->sz = d->sz;
+        dNew->thr = 0;
+        for (uint c = 0; c < g->nrChannels(); c++)
+        {
+            dNew->sp[c] = d->sp[c];
+            if (d->dep[c])
+            {
+                if (g->getChannel(c)->getSrcActor()->getId()
+                    == g->getChannel(c)->getDstActor()->getId())
+                {
+                    continue;
+                }
+
+                dNew->sz += minSzStep[c];
+                dNew->sp[c] += minSzStep[c];
+            }
+        }
+        dNew->next = NULL;
+        dNew->prev = NULL;
+
+        // Add storage distribution to set of distributions to be checked
+        if (!addStorageDistributionToChecklist(dNew))
+        {
+            // Distribution already in check list
+            deleteStorageDistribution(dNew);
+        }
+
+        /*
         // Create new storage distributions for every channel which
         // has a storage dependency in d
         for (uint c = 0; c < g->nrChannels(); c++)
@@ -1193,6 +1224,7 @@ namespace SDF
                 }
             }
         }
+        */
     }
 
     /**

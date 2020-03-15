@@ -46,6 +46,10 @@ namespace SDF
      */
     void SDF3Flow::estimateLatencyConstraints()
     {
+        // std::cerr << "[Hacking] Skipped estimateLatencyConstraints()" << std::endl;
+        setNextStateOfFlow(FlowEstimateBandwidthConstraint);
+        return;
+
         double throughputDist = selectedStorageDistribution->thr;
         TimedSDFgraph *storageAppGraph;
         RepetitionVector repVec;

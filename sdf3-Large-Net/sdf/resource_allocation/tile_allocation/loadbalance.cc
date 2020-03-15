@@ -273,6 +273,10 @@ namespace SDF
     SDFactors LoadBalanceBinding::sortActorsOnCriticality()
     {
         SDFactors sortedActors;
+        sortedActors = appGraph->getActors();
+
+        /*
+        SDFactors sortedActors;
 
         // Cycle mean not estimated?
         if (maxCycleMean == NULL)
@@ -282,7 +286,7 @@ namespace SDF
         sortedActors = appGraph->getActors();
         sortOnCost(sortedActors, maxCycleMean);
         sortedActors.reverse();
-
+        */
         return sortedActors;
     }
 
@@ -2433,6 +2437,7 @@ namespace SDF
         }
 #endif
 
+/*
 #ifdef VERBOSE
         cerr << "[INFO] Optimize binding" << endl;
 #endif
@@ -2452,7 +2457,7 @@ namespace SDF
             cerr << (100 * tileLoad[i] / max) << "%" << endl;
         }
 #endif
-
+*/
         return true;
     }
 

@@ -1,0 +1,320 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sdf3 type="sdf" version="1.0">
+  <applicationGraph name="HeartClass">
+    <sdf name="HeartClass" type="SNN2SDF">
+      <actor name="actor_0" type="crossbar">
+        <port name="out_port_0" rate="1" type="out"/>
+        <port name="out_port_1" rate="1" type="out"/>
+        <port name="out_port_2" rate="1" type="out"/>
+        <port name="out_port_3" rate="1" type="out"/>
+        <port name="out_port_4" rate="1" type="out"/>
+        <port name="out_port_5" rate="1" type="out"/>
+        <port name="out_port_6" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_1" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+        <port name="out_port_0" rate="1" type="out"/>
+        <port name="out_port_1" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_7" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+        <port name="out_port_0" rate="1" type="out"/>
+        <port name="out_port_1" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_8" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+      </actor>
+      <actor name="actor_11" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+        <port name="out_port_0" rate="1" type="out"/>
+        <port name="out_port_1" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_12" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+        <port name="out_port_0" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_13" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+        <port name="in_port_1" rate="1" type="in"/>
+        <port name="out_port_0" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_14" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+        <port name="in_port_1" rate="1" type="in"/>
+        <port name="in_port_2" rate="1" type="in"/>
+        <port name="in_port_3" rate="1" type="in"/>
+        <port name="in_port_4" rate="1" type="in"/>
+        <port name="in_port_5" rate="1" type="in"/>
+        <port name="in_port_6" rate="1" type="in"/>
+        <port name="in_port_7" rate="1" type="in"/>
+        <port name="in_port_8" rate="1" type="in"/>
+        <port name="out_port_0" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_2" type="crossbar">
+        <port name="out_port_0" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_3" type="crossbar">
+        <port name="out_port_0" rate="1" type="out"/>
+        <port name="out_port_1" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_15" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+        <port name="in_port_1" rate="1" type="in"/>
+        <port name="in_port_2" rate="1" type="in"/>
+        <port name="in_port_3" rate="1" type="in"/>
+        <port name="in_port_4" rate="1" type="in"/>
+        <port name="in_port_5" rate="1" type="in"/>
+        <port name="in_port_6" rate="1" type="in"/>
+        <port name="in_port_7" rate="1" type="in"/>
+        <port name="in_port_8" rate="1" type="in"/>
+        <port name="out_port_0" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_4" type="crossbar">
+        <port name="out_port_0" rate="1" type="out"/>
+        <port name="out_port_1" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_6" type="crossbar">
+        <port name="out_port_0" rate="1" type="out"/>
+        <port name="out_port_1" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_9" type="crossbar">
+        <port name="out_port_0" rate="1" type="out"/>
+        <port name="out_port_1" rate="1" type="out"/>
+      </actor>
+      <actor name="actor_16" type="crossbar">
+        <port name="in_port_0" rate="1" type="in"/>
+      </actor>
+      <channel dstActor="actor_1" dstPort="in_port_0" initialTokens="1" name="connection_0_1" srcActor="actor_0" srcPort="out_port_0"/>
+      <channel dstActor="actor_7" dstPort="in_port_0" initialTokens="1" name="connection_0_7" srcActor="actor_0" srcPort="out_port_1"/>
+      <channel dstActor="actor_8" dstPort="in_port_0" initialTokens="1" name="connection_0_8" srcActor="actor_0" srcPort="out_port_2"/>
+      <channel dstActor="actor_11" dstPort="in_port_0" initialTokens="1" name="connection_0_11" srcActor="actor_0" srcPort="out_port_3"/>
+      <channel dstActor="actor_12" dstPort="in_port_0" initialTokens="1" name="connection_0_12" srcActor="actor_0" srcPort="out_port_4"/>
+      <channel dstActor="actor_13" dstPort="in_port_0" initialTokens="1" name="connection_0_13" srcActor="actor_0" srcPort="out_port_5"/>
+      <channel dstActor="actor_14" dstPort="in_port_0" initialTokens="1" name="connection_0_14" srcActor="actor_0" srcPort="out_port_6"/>
+      <channel dstActor="actor_13" dstPort="in_port_1" initialTokens="1" name="connection_1_13" srcActor="actor_1" srcPort="out_port_0"/>
+      <channel dstActor="actor_14" dstPort="in_port_1" initialTokens="1" name="connection_1_14" srcActor="actor_1" srcPort="out_port_1"/>
+      <channel dstActor="actor_14" dstPort="in_port_2" initialTokens="1" name="connection_2_14" srcActor="actor_2" srcPort="out_port_0"/>
+      <channel dstActor="actor_14" dstPort="in_port_3" initialTokens="1" name="connection_3_14" srcActor="actor_3" srcPort="out_port_0"/>
+      <channel dstActor="actor_15" dstPort="in_port_0" initialTokens="1" name="connection_3_15" srcActor="actor_3" srcPort="out_port_1"/>
+      <channel dstActor="actor_14" dstPort="in_port_4" initialTokens="1" name="connection_4_14" srcActor="actor_4" srcPort="out_port_0"/>
+      <channel dstActor="actor_15" dstPort="in_port_1" initialTokens="1" name="connection_4_15" srcActor="actor_4" srcPort="out_port_1"/>
+      <channel dstActor="actor_14" dstPort="in_port_5" initialTokens="1" name="connection_6_14" srcActor="actor_6" srcPort="out_port_0"/>
+      <channel dstActor="actor_15" dstPort="in_port_2" initialTokens="1" name="connection_6_15" srcActor="actor_6" srcPort="out_port_1"/>
+      <channel dstActor="actor_14" dstPort="in_port_6" initialTokens="1" name="connection_7_14" srcActor="actor_7" srcPort="out_port_0"/>
+      <channel dstActor="actor_15" dstPort="in_port_3" initialTokens="1" name="connection_7_15" srcActor="actor_7" srcPort="out_port_1"/>
+      <channel dstActor="actor_14" dstPort="in_port_7" initialTokens="1" name="connection_9_14" srcActor="actor_9" srcPort="out_port_0"/>
+      <channel dstActor="actor_15" dstPort="in_port_4" initialTokens="1" name="connection_9_15" srcActor="actor_9" srcPort="out_port_1"/>
+      <channel dstActor="actor_14" dstPort="in_port_8" initialTokens="1" name="connection_11_14" srcActor="actor_11" srcPort="out_port_0"/>
+      <channel dstActor="actor_15" dstPort="in_port_5" initialTokens="1" name="connection_11_15" srcActor="actor_11" srcPort="out_port_1"/>
+      <channel dstActor="actor_15" dstPort="in_port_6" initialTokens="1" name="connection_12_15" srcActor="actor_12" srcPort="out_port_0"/>
+      <channel dstActor="actor_15" dstPort="in_port_7" initialTokens="1" name="connection_13_15" srcActor="actor_13" srcPort="out_port_0"/>
+      <channel dstActor="actor_15" dstPort="in_port_8" initialTokens="1" name="connection_14_15" srcActor="actor_14" srcPort="out_port_0"/>
+      <channel dstActor="actor_16" dstPort="in_port_0" initialTokens="1" name="connection_15_16" srcActor="actor_15" srcPort="out_port_0"/>
+    </sdf>
+    <sdfProperties>
+      <actorProperties actor="actor_0">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_1">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_7">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_8">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_11">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_12">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_13">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_14">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_2">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_3">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_15">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_4">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_6">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_9">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <actorProperties actor="actor_16">
+        <processor default="true" type="crossbar">
+          <executionTime time="4"/>
+          <memory>
+            <stateSize max="2"/>
+          </memory>
+        </processor>
+      </actorProperties>
+      <channelProperties channel="connection_0_1">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_0_7">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_0_8">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_0_11">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_0_12">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_0_13">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_0_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_1_13">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_1_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_2_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_3_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_3_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_4_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_4_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_6_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_6_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_7_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_7_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_9_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_9_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_11_14">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_11_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_12_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_13_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_14_15">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <channelProperties channel="connection_15_16">
+        <tokenSize sz="1"/>
+      </channelProperties>
+      <graphProperties>
+        <timeConstraints>
+          <throughput>0.00000003</throughput>
+        </timeConstraints>
+      </graphProperties>
+    </sdfProperties>
+  </applicationGraph>
+</sdf3>

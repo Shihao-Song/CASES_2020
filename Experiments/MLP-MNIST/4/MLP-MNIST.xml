@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sdf3 type="sdf" version="1.0">
+  <applicationGraph name="MLP-MNIST">
+    <sdf name="MLP-MNIST" type="SNN2SDF"/>
+    <sdfProperties>
+      <graphProperties>
+        <timeConstraints>
+          <throughput>0.00000003</throughput>
+        </timeConstraints>
+      </graphProperties>
+    </sdfProperties>
+  </applicationGraph>
+</sdf3>

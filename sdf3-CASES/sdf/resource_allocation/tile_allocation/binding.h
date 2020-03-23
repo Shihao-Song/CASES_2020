@@ -95,6 +95,14 @@ namespace SDF
             // Resource management
             virtual void releaseResources() = 0;
 
+            // TODO, shihao's changes.
+            void setCustomTileBinding(CString _binding) { tileBinding = _binding; }
+            void setCustomStaticOrderSchedule(CString _schedule) { staticOrderSchedule = _schedule; }
+
+        protected:
+            CString tileBinding = "N/A";
+            CString staticOrderSchedule = "N/A";
+
         protected:
             // Throughput
             double analyzeThroughputApplication();

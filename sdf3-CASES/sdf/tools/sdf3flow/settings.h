@@ -61,6 +61,10 @@ namespace SDF
             // Output stream
             void initOutputStream();
 
+            // TODO, Shihao's changes
+            CString tileBinding = "N/A";
+            CString staticOrderSchedule = "N/A";
+
         private:
             // Parsing of settings
             void parseArguments(CStrings args);

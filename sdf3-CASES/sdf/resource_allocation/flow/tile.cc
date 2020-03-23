@@ -40,6 +40,11 @@ namespace SDF
      * bindSDFGtoTiles ()
      * Bind actor and channels of the SDFG to the tile resources.
      */
+    void SDF3Flow::useCustomTileBinding()
+    {
+        tileMapping->setCustomTileBinding(tileBinding);
+    }
+
     void SDF3Flow::bindSDFGtoTiles()
     {
         // Output current state of the flow
@@ -59,6 +64,11 @@ namespace SDF
      * Constrauct static-order schedule for every tile to which actors
      * are bound.
      */
+    void SDF3Flow::useCustomStaticOrderSchedule()
+    {
+        tileMapping->setCustomStaticOrderSchedule(staticOrderSchedule);
+    }
+
     void SDF3Flow::constructStaticOrderScheduleTiles()
     {
         // Output current state of the flow

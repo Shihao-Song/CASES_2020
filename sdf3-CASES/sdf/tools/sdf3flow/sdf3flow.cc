@@ -110,6 +110,16 @@ namespace SDF
         flow = new SDF3Flow(settings.flowType, xmlAppGraph, xmlArchGraph,
                             xmlSystemUsage);
 
+        // TODO, shihao's change. Set custom tile mapping and static order schedule.
+        if (settings.tileBinding != "N/A")
+        {
+            flow->setCustomTileBinding(settings.tileBinding);
+        }
+        if (settings.staticOrderSchedule != "N/A")
+        {
+            flow->setCustomStaticOrderSchedule(settings.staticOrderSchedule);
+        }
+
         // Run flow step-by-step?
         if (settings.stepFlag)
             flow->setStepMode(true);

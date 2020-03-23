@@ -115,6 +115,14 @@ namespace SDF
             void outputMappingAsXML(ostream &out);
             void outputMappingAsHTML();
 
+            // TODO, shihao's changes.
+            void setCustomTileBinding(CString _binding) { tileBinding = _binding; }
+            void setCustomStaticOrderSchedule(CString _schedule) { staticOrderSchedule = _schedule; }
+
+        protected:
+            CString tileBinding = "N/A";
+            CString staticOrderSchedule = "N/A";
+
         private:
             // Application graph
             TimedSDFgraph *getAppGraph()
@@ -142,6 +150,9 @@ namespace SDF
             };
 
         private:
+            void useCustomTileBinding();
+            void useCustomStaticOrderSchedule();
+
             // Steps of the design flow
             void checkInputDesignFlow();
             void modelNonLocalMemoryAccesses();

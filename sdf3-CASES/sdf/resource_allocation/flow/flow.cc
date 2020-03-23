@@ -203,10 +203,12 @@ namespace SDF
                     break;
 
                 case FlowBindSDFGtoTile:
+                    useCustomTileBinding();
                     bindSDFGtoTiles();
                     break;
 
                 case FlowStaticOrderScheduleTiles:
+                    useCustomStaticOrderSchedule();
                     constructStaticOrderScheduleTiles();
                     break;
 

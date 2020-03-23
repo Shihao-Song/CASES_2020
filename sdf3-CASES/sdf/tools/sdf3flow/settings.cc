@@ -274,6 +274,23 @@ namespace SDF
         file = CGetAttribute(archGraphNode, "file");
         xmlArchGraph = loadArchitectureGraphFromFile(file);
 
+        // TODO, Shihao's change.
+        CNode *tileBindingNode = CGetChildNode(settingsNode, "TileBinding");
+        if (tileBindingNode != NULL)
+        {
+            tileBinding = CGetAttribute(tileBindingNode, "file");
+            // std::cerr << "[Hacking] Tile binding file: " << tileBinding << std::endl;
+            delete tileBindingNode;
+        }
+
+        CNode *staticOrderScheduleNode = CGetChildNode(settingsNode, "StaticOrderSchedule");
+        if (staticOrderScheduleNode != NULL)
+        {
+            staticOrderSchedule = CGetAttribute(staticOrderScheduleNode, "file");
+            // std::cerr << "[Hacking] Static order schedule: " << staticOrderSchedule << std::endl;
+            delete staticOrderScheduleNode;
+        }
+
         // System usage information
         systemUsageNode =  CGetChildNode(settingsNode, "systemUsage");
         if (systemUsageNode != NULL)

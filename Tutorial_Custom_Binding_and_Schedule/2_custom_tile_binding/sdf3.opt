@@ -7,7 +7,7 @@
     <applicationGraph file="LeNet-MNIST.xml"/>
     <architectureGraph file="neuromorphic.4.xml"/>
     <TileBinding file="tile_binding.txt"/>
-    <StaticOrderSchedule file="static_order_schedule.txt"/>
+    <!--<StaticOrderSchedule file="static_order_schedule.txt"/>-->
     <!--<systemUsage file="usage.xml"/>-->
     <!--<messagesSet file="messages.xml"/>-->
     <tileMapping algo="loadbalance">

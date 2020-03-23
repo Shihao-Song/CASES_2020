@@ -37,6 +37,11 @@
 #include "loadbalance.h"
 #include "../../base/algo/cycle.h"
 #include "../scheduling/scheduling.h"
+
+#include <unordered_map>
+#include <fstream>
+#include <sstream>
+
 namespace SDF
 {
 
@@ -1391,6 +1396,65 @@ namespace SDF
      */
     bool LoadBalanceBinding::bindActorsToTiles()
     {
+        if (tileBinding != "N/A")
+        {
+        std::unordered_map<std::string, std::string> actor_to_tile;
+        std::ifstream binding_file(tileBinding);
+        assert(binding_file.good());
+        std::string line;
+        getline(binding_file, line);
+        while (!binding_file.eof())
+        {
+            // std::cerr << line << std::endl;
+            std::stringstream line_stream(line);
+            std::vector<std::string> tokens;
+            std::string intermidiate;
+            while (getline(line_stream, intermidiate, ' '))
+            {
+                tokens.push_back(intermidiate);
+            }
+            assert(tokens.size());
+
+            // Build binding table
+            std::string tile = "tile_" + tokens[0];
+            for (unsigned i = 1; i < tokens.size(); i++)
+            {
+                std::string actor = "actor_" + tokens[i];
+                actor_to_tile[actor] = tile;
+            }
+
+            getline(binding_file, line);
+        }
+        // for (auto [k, v] : actor_to_tile) { std::cerr << k << " : " << v << std::endl; }
+        // exit(0);
+        SDFactors actors = appGraph->getActors();
+        SDFactorsIter actorIter = actors.begin();
+        while (actorIter != actors.end())
+        {
+            TimedSDFactor *a = (TimedSDFactor *)(*actorIter);
+            std::string tile_to_be_mapped = actor_to_tile[a->getName()];
+
+            Tiles tiles = archGraph->getTiles();
+            for (TilesIter tileIter = tiles.begin();
+                 tileIter != tiles.end(); tileIter++)
+            {
+                Tile *t = *tileIter;
+
+                if (t->getName() == tile_to_be_mapped)
+                {
+                    if (!allocateResources(a, t))
+                    {
+                        std::cerr << "[INFO] Allocation failed." << std::endl;
+                        exit(0);
+                    }
+                }
+            }
+
+            actorIter++;
+        }
+        }
+        else
+        {
         SDFactorsIter actorIter;
         SDFactors actors;
 
@@ -1440,7 +1504,7 @@ namespace SDF
             // Next actor
             actorIter++;
         }
-
+        }
         return true;
     }
 
@@ -2474,6 +2538,129 @@ namespace SDF
 #endif
 
         minimizeStaticOrderSchedules(archGraph);
+
+        // std::cerr << staticOrderSchedule << std::endl;
+        std::unordered_map<std::string, std::string> actor_to_tile_mapping;
+        // std::cerr << "[Hacking] Original static order." << std::endl;
+        for (TilesIter iter = archGraph->tilesBegin();
+             iter != archGraph->tilesEnd(); iter++)
+        {
+            Tile *t = *iter;
+            Processor *p = t->getProcessor();
+
+            // Processor inside the tile
+            if (p != NULL)
+            {
+                std::cerr << "[Shihao-Mapping-Original] Tile (" << t->getName() << "): ";
+                auto &schedule = p->getSchedule();
+                for (auto iter = schedule.begin(); iter != schedule.end(); iter++)
+                {
+                    std::cerr << iter->actor->getName() << " ";
+                    actor_to_tile_mapping[iter->actor->getName()] = t->getName();
+                }
+                std::cerr << std::endl;
+            }
+        }
+        if (staticOrderSchedule == "N/A") { return true; }
+
+        std::ifstream order_file(staticOrderSchedule);
+        assert(order_file.good());
+        std::string line;
+        getline(order_file, line);
+        std::stringstream line_stream(line);
+        std::vector<std::string> tokens;
+        std::string intermidiate;
+        while (getline(line_stream, intermidiate, ','))
+        {
+            tokens.push_back(intermidiate);
+        }
+        assert(tokens.size());
+        std::vector<std::string> custom_order_schedule;
+        for (auto token : tokens)
+        {
+            // std::cerr << "actor_" + token << std::endl;
+            custom_order_schedule.push_back("actor_" + token);
+        }
+
+        std::unordered_map<std::string,std::vector<std::string>> tile_bindings;
+        for (auto &actor : custom_order_schedule)
+        {
+            auto iter = actor_to_tile_mapping.find(actor);
+            if (iter == actor_to_tile_mapping.end()) { continue; }
+            tile_bindings[iter->second].push_back(actor);
+        }
+
+        CTimer timer;
+        startTimer(&timer);
+
+        for (TilesIter iter = archGraph->tilesBegin();
+             iter != archGraph->tilesEnd(); iter++)
+        {
+            Tile *t = *iter;
+            Processor *p = t->getProcessor();
+
+            // if (t->getName() == "tile_3") { continue; }
+            // Processor inside the tile
+            if (p != NULL)
+            {
+                // StaticOrderSchedule new_schedule;
+                auto schedule_ref = p->getSchedule();
+                auto &schedule = p->getSchedule();
+                schedule.clear();
+
+                auto iter = tile_bindings.find(t->getName());
+                if (iter != tile_bindings.end())
+                {
+                    auto &mapping = iter->second;
+
+                    for (unsigned i = 0; i < mapping.size(); i++)
+                    {
+                        auto actor = mapping[i];
+                        auto iter = schedule_ref.begin();
+                        while (iter != schedule_ref.end())
+                        {
+                            auto cur = *iter;
+                            // auto cur_iter = iter;
+                            iter++;
+
+                            if (cur.actor->getName() == actor)
+                            {
+                                schedule.appendActor(cur.actor);
+                                // schedule.erase(cur_iter);
+                                // schedule.insert(schedule.begin(), cur);
+                                break;
+                            }
+                        }
+                    }
+                }
+                // p->setSchedule(new_schedule);
+            }
+        }
+        stopTimer(&timer);
+
+        for (TilesIter iter = archGraph->tilesBegin();
+             iter != archGraph->tilesEnd(); iter++)
+        {
+            Tile *t = *iter;
+            Processor *p = t->getProcessor();
+
+            // Processor inside the tile
+            if (p != NULL)
+            {
+                std::cerr << "[Shihao-Mapping-New] Tile (" << t->getName() << "): ";
+                auto &schedule = p->getSchedule();
+                for (auto iter = schedule.begin(); iter != schedule.end(); iter++)
+                {
+                    std::cerr << iter->actor->getName() << " ";
+                    actor_to_tile_mapping[iter->actor->getName()] = t->getName();
+                }
+                std::cerr << std::endl;
+            }
+        }
+
+        cout << "[INFO   ] Shihao took: ";
+        printTimer(cout, &timer);
+        cout << endl;
 
         return true;
     }

@@ -330,14 +330,17 @@ namespace SDF
             double const_l, double const_m, double const_n, double const_o,
             double const_p, double const_q)
     {
+        // std::cerr << "[Study] sortTilesOnLoad" << std::endl;
+
         double procLoad, memLoad, inBwLoad, outBwLoad, bwLoad, connLoad, commLoad;
-        double newConnLoad, maxProcLoad, maxConnBinding = 0;
+        double newConnLoad, maxProcLoad; // maxConnBinding = 0;
         double *connBinding, *costOfTile;
 
         // Initialize
         connBinding = new double [(unsigned int) archGraph->nrTiles()];
         costOfTile = new double [(unsigned int) archGraph->nrTiles()];
 
+        // std::cerr << "[Study]     Estimate Maximum Processing Load" << std::endl;
         // Estimate the maximum, average processing load to scale procLoad
         maxProcLoad = 0;
         for (SDFactorsIter iter = appGraph->actorsBegin();
@@ -352,11 +355,16 @@ namespace SDF
                 if ((*iterP)->execTime > maxExecTime)
                     maxExecTime = (*iterP)->execTime;
             }
+            // std::cerr << "[Study]         Actor: " << b->getName() << ". "
+            //           << "Maximum Execution Time: " << maxExecTime << std::endl;
 
             maxProcLoad += repVec[b->getId()] * maxExecTime;
         }
         maxProcLoad = maxProcLoad / (double) archGraph->nrTiles();
+        // std::cerr << "[Study] Maximum Processing Load / Number of Tiles: " << maxProcLoad << std::endl;
+        // std::cerr << "[Study]" << std::endl;
 
+        // std::cerr << "[Study] Compute resource usage and cost for each tile." << std::endl; 
         // Compute resource usage and cost for each tile
         for (TilesIter iter = tiles.begin(); iter != tiles.end(); iter++)
         {
@@ -365,6 +373,9 @@ namespace SDF
             Memory *m = t->getMemory();
             NetworkInterface *ni = t->getNetworkInterface();
             bool actorOnTile = false;
+
+            // std::cerr << "[Study]" << std::endl;
+            // std::cerr << "[Study]     Assessing Tile: " << t->getName() << std::endl;
 
             // Can actor a be mapped to tile t?
             if (p != NULL && a->getProcessor(p->getType()) != NULL)
@@ -395,7 +406,7 @@ namespace SDF
                     procLoad += actorLoadOnTile(a, t);
                 }
             }
-
+            // std::cerr << "[Study]         Total mapped processing load: " << procLoad << std::endl;
             // Add penalty for time wheel occupation
             //procLoad = procLoad * (p->availableTimewheelSize()
             //                                / (double) p->getTimewheelSize());
@@ -405,9 +416,13 @@ namespace SDF
 
             // Scale procLoad
             procLoad = procLoad / maxProcLoad;
+            // std::cerr << "[Study]         Scaled (by maxProcLoad) total mapped processing load: " 
+            //           << procLoad << std::endl;
 
+            // std::cerr << "[Study]" << std::endl;
             // Memory
             memLoad = (double)(m->getSize() - m->availableMemorySize());
+            // std::cerr << "[Study]         Current memory load: " << memLoad << std::endl;
             if (actorOnTile)
             {
                 // Is the memory reserved for actors not large enough?
@@ -422,45 +437,72 @@ namespace SDF
                 // Add memory needed for newly mapped channels
                 memLoad += memLoadChannelsOnTile(a, t);
             }
+            // std::cerr << "[Study]         Memory load once mapped: " << memLoad << std::endl;
             memLoad = memLoad / (double) m->getSize();
+            // std::cerr << "[Study]         Scaled (Total memory size) memory load once mapped: " 
+            //           << memLoad << std::endl;
 
+            // std::cerr << "[Study]" << std::endl;
             // Incoming bandwidth
             inBwLoad = ni->getInBandwidth() - ni->availableInBandwidth();
+            // std::cerr << "[Study]         Current in-coming bandwidth load: " << inBwLoad << std::endl;
             if (actorOnTile)
                 inBwLoad += bwChannelsMappedToInConnection(a, t);
+            // std::cerr << "[Study]         In-coming bandwidth load once mapped: " << inBwLoad << std::endl;
             inBwLoad = inBwLoad / (double) ni->getInBandwidth();
+            // std::cerr << "[Study]         Scaled (Total in-bandwidth) in-coming bandwidth load once mapped: " 
+            //           << inBwLoad << std::endl;
 
+            // std::cerr << "[Study]" << std::endl;
             // Outgoing bandwidth
             outBwLoad = ni->getOutBandwidth() - ni->availableOutBandwidth();
+            // std::cerr << "[Study]         Current out-going bandwidth load: " << outBwLoad << std::endl;
             if (actorOnTile)
                 outBwLoad += bwChannelsMappedToOutConnection(a, t);
+            // std::cerr << "[Study]         Out-going bandwidth load once mapped: " << outBwLoad << std::endl;
             outBwLoad = outBwLoad / (double) ni->getOutBandwidth();
+            // std::cerr << "[Study]         Scaled (Total out-bandwidth) out-going bandwidth load once mapped: " 
+            //           << outBwLoad << std::endl;
 
+            // std::cerr << "[Study]" << std::endl;
             // Bandwidth
             if (inBwLoad > outBwLoad)
                 bwLoad = inBwLoad;
             else
                 bwLoad = outBwLoad;
+            // std::cerr << "[Study]         Dominated bandwidth load: " << bwLoad << std::endl;
 
+            // std::cerr << "[Study]" << std::endl;
             // Connections
             connLoad = (double)(ni->getNrConnections() - ni->availableNrConnections());
+            // std::cerr << "[Study]         Current connection load: " << connLoad << std::endl;
             if (actorOnTile)
                 connLoad += nrChannelsMappedToConnection(a, t);
+            // std::cerr << "[Study]         Connection load once mapped: " << connLoad << std::endl;
             connLoad = connLoad / (double) ni->getNrConnections();
+            // std::cerr << "[Study]         Scaled (Total connections) connection load once mapped: " 
+            //           << connLoad << std::endl;
 
+            // std::cerr << "[Study]" << std::endl;
             // New connections
             newConnLoad = 0;
             if (actorOnTile)
                 newConnLoad = nrChannelsMappedToConnection(a, t);
+            // std::cerr << "[Study]         New connection load once mapped: " << newConnLoad << std::endl;
             newConnLoad = newConnLoad / (double) a->nrPorts();
+            // std::cerr << "[Study]         Scaled (Total ports) new connection load once mapped: " 
+            //           << newConnLoad << std::endl;
 
+            // std::cerr << "[Study]" << std::endl;
             // Communication load
             commLoad = (inBwLoad + outBwLoad + connLoad) / 3.0;
+            // std::cerr << "[Study]         Communication load: " << commLoad << std::endl;
 
+            // TODO, disabled Channel latency modeling.
             // Connection binding
-            connBinding[t->getId()] = computeLoadOfChannelToConnectionBinding(a, t);
-            if (connBinding[t->getId()] > maxConnBinding)
-                maxConnBinding = connBinding[t->getId()];
+            // connBinding[t->getId()] = computeLoadOfChannelToConnectionBinding(a, t);
+            // if (connBinding[t->getId()] > maxConnBinding)
+            //     maxConnBinding = connBinding[t->getId()];
 
             // Cost of tile t
             costOfTile[t->getId()]  = const_a * pow(procLoad, const_k);
@@ -470,19 +512,18 @@ namespace SDF
             costOfTile[t->getId()] += const_e * pow(newConnLoad, const_o);
             costOfTile[t->getId()] += const_f * pow(commLoad, const_p);
         }
-
         // Add cost of connections (latency) to the cost of every tile
-        for (TilesIter iter = tiles.begin(); iter != tiles.end(); iter++)
-        {
-            Tile *t = *iter;
+        // for (TilesIter iter = tiles.begin(); iter != tiles.end(); iter++)
+        // {
+        //     Tile *t = *iter;
 
             // Connection binding (normalize wrt to maximal load)
-            connBinding[t->getId()] = connBinding[t->getId()] / maxConnBinding;
+        //     connBinding[t->getId()] = connBinding[t->getId()] / maxConnBinding;
 
             // Cost of tile t
-            costOfTile[t->getId()] += const_g
-                                      * pow(connBinding[t->getId()], const_q);
-        }
+        //     costOfTile[t->getId()] += const_g
+        //                               * pow(connBinding[t->getId()], const_q);
+        // }
 
         // Sort tiles on cost
         sortOnCost(tiles, costOfTile);
@@ -490,6 +531,8 @@ namespace SDF
         // Cleanup
         delete [] costOfTile;
         delete [] connBinding;
+
+        // exit(0);
     }
 
     /**

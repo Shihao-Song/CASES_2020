@@ -270,7 +270,15 @@ namespace SDF
                         * repVec[c->getSrcActor()->getId()]
                         * c->getTokenSize()
                         * selectedStorageDistribution->thr;
-
+	    if (c->getTokenSize() == -1)
+	    {
+                std::cerr << "[ERROR] Connection (" << c->getName() << ") is broken." << std::endl;
+            // std::cerr << c->getSrcPort()->getRate() << std::endl;
+	    // std::cerr << repVec[c->getSrcActor()->getId()] << std::endl;
+	    // std::cerr << "Token size: " << c->getTokenSize() << std::endl;
+	    // std::cerr << selectedStorageDistribution->thr << std::endl;
+                exit(0);
+	    }
             c->setMinBandwidth(bandwidth);
 
             logMsg("Bandwidth channel '" + c->getName() + "': "

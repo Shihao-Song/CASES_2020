@@ -200,6 +200,7 @@ namespace SDF
 
                 case FlowEstimateBandwidthConstraint:
                     estimateBandwidthConstraints();
+                    // exit(0);
                     break;
 
                 case FlowBindSDFGtoTile:

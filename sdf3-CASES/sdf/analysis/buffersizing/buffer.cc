@@ -891,7 +891,7 @@ namespace SDF
                     startActorFiring(a);
                 }
             }
-
+            // std::cerr << std::endl;
             // Clock step
             clkStep = clockStep();
 
@@ -1152,7 +1152,7 @@ namespace SDF
         StorageDistributionSet *ds, StorageDistribution *d)
     {
         StorageDistribution *dNew;
-
+        // std::cerr << "[Info] Exe" << std::endl;
         // Compute throughput and storage dependencies
         execStorageDistribution(d);
 

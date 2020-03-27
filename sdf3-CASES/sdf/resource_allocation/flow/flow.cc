@@ -206,6 +206,7 @@ namespace SDF
                 case FlowBindSDFGtoTile:
                     useCustomTileBinding();
                     bindSDFGtoTiles();
+		    // exit(0);
                     break;
 
                 case FlowStaticOrderScheduleTiles:

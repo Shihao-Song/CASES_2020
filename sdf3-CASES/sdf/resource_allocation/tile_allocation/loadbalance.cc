@@ -2508,6 +2508,9 @@ namespace SDF
         // Bind each actor to a tile
         if (!bindActorsToTiles())
         {
+            std::cerr << "[ERROR] Failed binding actors to tiles." << std::endl;
+            exit(0);
+            // TODO, we don't allow any furthr exploration for performance.
 #ifdef VERBOSE
             cerr << "Failed binding actor to tile." << endl;
 #endif
